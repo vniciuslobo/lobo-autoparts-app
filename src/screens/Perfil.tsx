@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Modal, Alert } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity, Image, Modal, Alert } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { CameraView, useCameraPermissions } from 'expo-camera';
+import Texto from '../components/Texto';
 
 export default function Perfil() {
   // Estados do Formulário
@@ -67,7 +68,7 @@ export default function Perfil() {
       <CameraView style={{ flex: 1 }} facing="front" ref={cameraRef}>
         <View style={styles.containerBotoesCamera}>
           <TouchableOpacity style={styles.botaoCancelarCamera} onPress={() => setCameraVisivel(false)}>
-            <Text style={styles.textoBotaoCamera}>Cancelar</Text>
+            <Texto style={styles.textoBotaoCamera}>Cancelar</Texto>
           </TouchableOpacity>
           <TouchableOpacity style={styles.botaoCapturar} onPress={tirarFoto}>
             <Ionicons name="camera" size={32} color="#fff" />
@@ -106,7 +107,7 @@ export default function Perfil() {
 
       {/* FORMULÁRIO */}
       <View style={styles.formulario}>
-        <Text style={styles.label}>E-mail</Text>
+        <Texto style={styles.label}>E-mail</Texto>
         <TextInput
           style={styles.input}
           value={email}
@@ -116,7 +117,7 @@ export default function Perfil() {
           autoCapitalize="none"
         />
 
-        <Text style={styles.label}>WhatsApp</Text>
+        <Texto style={styles.label}>Whatsapp</Texto>
         <TextInput
           style={styles.input}
           value={whatsapp}
@@ -125,7 +126,7 @@ export default function Perfil() {
           keyboardType="phone-pad"
         />
 
-        <Text style={styles.label}>Senha</Text>
+        <Texto style={styles.label}>Senha</Texto>
         <TextInput
           style={styles.input}
           value={senha}
@@ -135,7 +136,7 @@ export default function Perfil() {
         />
 
         <TouchableOpacity style={styles.botaoSalvar} onPress={salvarPerfil}>
-          <Text style={styles.textoBotaoSalvar}>Salvar</Text>
+          <Texto style={styles.textoBotaoSalvar}>Salvar</Texto>
         </TouchableOpacity>
       </View>
 
@@ -143,20 +144,20 @@ export default function Perfil() {
       <Modal animationType="fade" transparent={true} visible={modalVisivel}>
         <BlurView intensity={30} tint="dark" style={styles.blurContainer}>
           <View style={styles.modalConteudo}>
-            <Text style={styles.tituloModal}>Alterar foto de perfil</Text>
+            <Texto style={styles.tituloModal}>Alterar foto de perfil</Texto>
             
             <TouchableOpacity style={styles.botaoModal} onPress={iniciarCamera}>
               <Ionicons name="camera-outline" size={24} color="#333" />
-              <Text style={styles.textoBotaoModal}>Tirar Foto</Text>
+              <Texto style={styles.textoBotaoModal}>Tirar Foto</Texto>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.botaoModal} onPress={escolherDaGaleria}>
               <Ionicons name="image-outline" size={24} color="#333" />
-              <Text style={styles.textoBotaoModal}>Escolher da Galeria</Text>
+              <Texto style={styles.textoBotaoModal}>Escolher da Galeria</Texto>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.botaoCancelarModal} onPress={() => setModalVisivel(false)}>
-              <Text style={styles.textoCancelarModal}>Cancelar</Text>
+              <Texto style={styles.textoCancelarModal}>Cancelar</Texto>
             </TouchableOpacity>
           </View>
         </BlurView>

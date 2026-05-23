@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, Modal, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, FlatList, Image, Modal, TouchableOpacity } from 'react-native';
 import { BlurView } from 'expo-blur'; // O fundo embaçado
 import { Ionicons } from '@expo/vector-icons'; // O ícone de X
 import { listaProdutos } from '../mocks/ListaProdutos'; // Importando nossos dados
+import Texto from '../components/Texto';
 
 export default function Produtos() {
   // O Estado é como a memória da tela: ele lembra se o modal está aberto ou não, e qual produto foi clicado
@@ -20,14 +21,14 @@ export default function Produtos() {
     <TouchableOpacity style={styles.cardProduto} onPress={() => abrirModal(item)}>
       <Image source={{ uri: item.imagem }} style={styles.imagemProduto} />
       {/* numberOfLines={2} evita que nomes muito grandes quebrem o visual */}
-      <Text style={styles.nomeProduto} numberOfLines={2}>{item.nome}</Text> 
+      <Texto style={styles.nomeProduto} numberOfLines={2}>{item.nome}</Texto>
     </TouchableOpacity>
   );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.tituloSecao}>Nossos Produtos</Text>
-      
+      <Texto style={styles.tituloSecao}>Nossos Produtos</Texto>
+
       {/* A Lista principal */}
       <FlatList
         data={listaProdutos}
@@ -42,11 +43,11 @@ export default function Produtos() {
       <Modal animationType="fade" transparent={true} visible={modalVisivel}>
         {/* BlurView cria o fundo embaçado escuro por trás da janela */}
         <BlurView intensity={40} tint="dark" style={styles.containerBlur}>
-          
+
           {/* Só tenta mostrar as informações se existir um produto selecionado */}
           {produtoSelecionado && (
             <View style={styles.conteudoModal}>
-              
+
               {/* Botão de Fechar (O X no canto superior direito) */}
               <TouchableOpacity style={styles.botaoFechar} onPress={() => setModalVisivel(false)}>
                 <Ionicons name="close" size={28} color="#333" />
@@ -54,19 +55,19 @@ export default function Produtos() {
 
               {/* Informações do Produto dentro da janela */}
               <Image source={{ uri: produtoSelecionado.imagem }} style={styles.imagemModal} />
-              <Text style={styles.categoriaModal}>{produtoSelecionado.categoria}</Text>
-              <Text style={styles.nomeModal}>{produtoSelecionado.nome}</Text>
-              <Text style={styles.descricaoModal}>{produtoSelecionado.descricao}</Text>
-              <Text style={styles.precoModal}>{produtoSelecionado.preco}</Text>
+              <Texto style={styles.categoriaModal}>{produtoSelecionado.categoria}</Texto>
+              <Texto style={styles.nomeModal}>{produtoSelecionado.nome}</Texto>
+              <Texto style={styles.descricaoModal}>{produtoSelecionado.descricao}</Texto>
+              <Texto style={styles.precoModal}>{produtoSelecionado.preco}</Texto>
 
               {/* Botão de Compra Estético */}
               <TouchableOpacity style={styles.botaoComprar}>
-                <Text style={styles.textoBotaoComprar}>Comprar Agora</Text>
+                <Texto style={styles.textoBotaoComprar}>Comprar Agora</Texto>
               </TouchableOpacity>
-              
+
             </View>
           )}
-          
+
         </BlurView>
       </Modal>
     </View>
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around', // Espalha os 2 itens igualmente na linha
     marginBottom: 15,
   },
-  
+
   // Visual do Produto na Lista
   cardProduto: {
     width: '45%', // Pega quase metade da tela, deixando um respiro no meio
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5, 
+    elevation: 5,
   },
   botaoFechar: {
     position: 'absolute',
