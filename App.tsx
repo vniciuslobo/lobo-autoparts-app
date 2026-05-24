@@ -33,17 +33,22 @@ export default function App() {
             let iconName: keyof typeof Ionicons.glyphMap = 'help-circle';
 
             if (route.name === 'Início') {
-              iconName = 'home';
+              iconName = 'home-outline';
             } else if (route.name === 'Produtos') {
-              iconName = 'hardware-chip';
+              iconName = 'bag-outline';
             } else if (route.name === 'Perfil') {
-              iconName = 'person';
+              iconName = 'person-outline';
             }
 
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: '#007AFF',
-          tabBarInactiveTintColor: 'gray',
+          tabBarStyle: {
+            backgroundColor: '#ce0000',
+            borderTopWidth: 0,
+            paddingTop: 10
+          },
+          tabBarActiveTintColor: '#FFFFFF',
+          tabBarInactiveTintColor: 'rgba(255,255,255,0.5)',
           tabBarLabelStyle: {
             fontFamily: 'SpaceGrotesk-Regular',
           },

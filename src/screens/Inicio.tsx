@@ -15,7 +15,7 @@ const categorias = [
 export default function Inicio() {
   // Configurando um vídeo público da internet para testes
   const player = useVideoPlayer(
-    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+    require('../../assets/video.mp4'),
     (player) => {
       player.loop = true;
       player.muted = false;
@@ -25,6 +25,7 @@ export default function Inicio() {
   return (
     <ScrollView style={styles.container}>
       {/* 1. Imagem Padrão do Topo */}
+      <Texto style={styles.tituloTopo}>LOBO AUTOPARTS</Texto>
       <Image
         source={require('../../assets/icon.png')} // Pegando o ícone padrão do Expo
         style={styles.imagemTopo}
@@ -33,9 +34,10 @@ export default function Inicio() {
       {/* 2. Texto Centralizado na tela, mas alinhado à esquerda/justificado */}
       <View style={styles.containerTexto}>
         <Texto>
-          Bem-vindo ao app! Encontre aqui os melhores componentes e serviços
-          para extrair o máximo de velocidade e eficiência do seu equipamento,
-          seja para o dia a dia ou tarefas pesadas.
+          Em nossa loja, motor não é só peça, é paixão. Somos especializados na venda de peças de preparação e manutenção automotiva, com foco em desempenho, confiabilidade que só quem tem aquela alma turbinada entende.
+        </Texto>
+        <Texto>
+          Trabalhamos com carros de rua, pista e projetos personalizados. Gostamos de elevar o nível, aqui cada produto é feito com alma de entusiasta.
         </Texto>
       </View>
 
@@ -76,55 +78,56 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  tituloTopo: {
+    marginTop: 70,
+    marginBottom: 25,
+    fontSize: 25,
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
   imagemTopo: {
     width: 150,
     height: 150,
     alignSelf: 'center',
-    marginTop: 60,
-    marginBottom: 20,
+    // marginTop: 70,
+    marginBottom: 25,
     borderRadius: 20,
   },
   containerTexto: {
     paddingHorizontal: 30, // Isso "empurra" o texto para o centro
-    marginBottom: 20,
-  },
-  texto: {
-    fontSize: 16,
-    textAlign: 'justify', // Justificado, conforme você pediu
-    color: '#333',
-    lineHeight: 24,
+    marginBottom: 25,
   },
   containerVideo: {
     alignItems: 'center',
-    marginBottom: 30,
+    marginBottom: 25,
   },
   video: {
-    width: 320,
-    height: 200,
-    borderRadius: 10,
+    width: 330,
+    height: 187
   },
   tituloSlider: {
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: 'bold',
     marginLeft: 20,
-    marginBottom: 10,
+    marginBottom: 25,
+    textAlign: 'center'
   },
   sliderContainer: {
     paddingHorizontal: 20,
-    paddingBottom: 40, // Espaço extra para não colar no menu inferior
+    paddingBottom: 40 // Espaço extra para não colar no menu inferior
   },
   cardCategoria: {
     alignItems: 'center',
-    marginRight: 15,
+    marginRight: 20
   },
   imagemCategoria: {
-    width: 80,
-    height: 80,
-    borderRadius: 10,
-    marginBottom: 5,
+    width: 150,
+    height: 110,
+    borderRadius: 5,
+    marginBottom: 5
   },
   textoCategoria: {
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: 16,
+    fontWeight: '500'
   },
 });
