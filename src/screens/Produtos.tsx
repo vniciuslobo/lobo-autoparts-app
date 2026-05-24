@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, FlatList, Image, Modal, TouchableOpacity } from 'react-native';
 import { BlurView } from 'expo-blur';
-import { Ionicons } from '@expo/vector-icons';
 import { listaProdutos } from '../mocks/ListaProdutos';
 import Texto from '../components/Texto';
 
@@ -38,18 +37,14 @@ export default function Produtos() {
         contentContainerStyle={styles.listaContainer}
       />
 
-      <Modal animationType="fade" transparent={true} visible={modalVisivel}>
+      <Modal animationType="fade" transparent={true} visible={modalVisivel} onRequestClose={() => setModalVisivel(false)}>
         {/* Blur no background do modal */}
         <BlurView intensity={40} tint="dark" style={styles.containerBlur}>
 
-          {/* exibe informação caso tenho um produto selecionado */}
+          <TouchableOpacity style={StyleSheet.absoluteFillObject} onPress={() => setModalVisivel(false)} activeOpacity={1}/>
+
           {produtoSelecionado && (
             <View style={styles.conteudoModal}>
-
-              {/* Botão de Fechar (O X no canto superior direito) */}
-              <TouchableOpacity style={styles.botaoFechar} onPress={() => setModalVisivel(false)}>
-                <Ionicons name="close" size={28} color="#333" />
-              </TouchableOpacity>
 
               {/* Informações do Produto dentro do modal */}
               <Image source={{ uri: produtoSelecionado.imagem }} style={styles.imagemModal} />
@@ -103,7 +98,7 @@ const styles = StyleSheet.create({
   imagemProduto: {
     width: '100%',
     aspectRatio: 1, // mantem a proporção 1:1 (Quadrado)
-    borderRadius: 10,
+    borderRadius: 5,
     marginBottom: 8,
   },
   nomeProduto: {
@@ -122,8 +117,8 @@ const styles = StyleSheet.create({
   conteudoModal: {
     width: '85%',
     backgroundColor: '#fff',
-    borderRadius: 20,
-    padding: 20,
+    borderRadius: 15,
+    padding: 25,
     alignItems: 'center',
     // Sombra para profundidade
     shadowColor: '#000',
@@ -132,18 +127,11 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  botaoFechar: {
-    position: 'absolute',
-    top: 15,
-    right: 15,
-    zIndex: 1,
-  },
   imagemModal: {
     width: 150,
     height: 150,
-    borderRadius: 10,
-    marginTop: 10,
-    marginBottom: 15,
+    borderRadius: 5,
+    marginBottom: 15
   },
   categoriaModal: {
     fontSize: 12,

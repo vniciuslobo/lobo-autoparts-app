@@ -6,10 +6,9 @@ import Texto from '../components/Texto';
 
 // Nossas categorias para o Slider
 const categorias = [
-  { id: '1', titulo: 'Manutenção', imagem: 'https://picsum.photos/100?random=1' },
-  { id: '2', titulo: 'Performance', imagem: 'https://picsum.photos/100?random=2' },
-  { id: '3', titulo: 'Iluminação', imagem: 'https://picsum.photos/100?random=3' },
-  { id: '4', titulo: 'Acessórios', imagem: 'https://picsum.photos/100?random=4' },
+  { id: '1', titulo: 'Performance', imagem: 'https://picsum.photos/100?random=1' },
+  { id: '2', titulo: 'Manutenção', imagem: 'https://picsum.photos/100?random=2' },
+  { id: '3', titulo: 'Elétrica', imagem: 'https://picsum.photos/100?random=3' }
 ];
 
 export default function Inicio() {
