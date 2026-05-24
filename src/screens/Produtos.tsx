@@ -1,50 +1,48 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, FlatList, Image, Modal, TouchableOpacity } from 'react-native';
-import { BlurView } from 'expo-blur'; // O fundo embaçado
-import { Ionicons } from '@expo/vector-icons'; // O ícone de X
-import { listaProdutos } from '../mocks/ListaProdutos'; // Importando nossos dados
+import { BlurView } from 'expo-blur';
+import { Ionicons } from '@expo/vector-icons';
+import { listaProdutos } from '../mocks/ListaProdutos';
 import Texto from '../components/Texto';
 
 export default function Produtos() {
-  // O Estado é como a memória da tela: ele lembra se o modal está aberto ou não, e qual produto foi clicado
+  // lembra se o modal está aberto ou não, e qual produto foi clicado
   const [modalVisivel, setModalVisivel] = useState(false);
   const [produtoSelecionado, setProdutoSelecionado] = useState<any>(null);
 
-  // Função que roda ao clicar em um produto
+  // Função ao clicar em um produto
   const abrirModal = (produto: any) => {
-    setProdutoSelecionado(produto); // Salva qual produto foi clicado
-    setModalVisivel(true); // Abre a janela
+    setProdutoSelecionado(produto);
+    setModalVisivel(true);
   };
 
   // Como cada produto deve ser desenhado na lista
   const renderizarProduto = ({ item }: { item: any }) => (
     <TouchableOpacity style={styles.cardProduto} onPress={() => abrirModal(item)}>
       <Image source={{ uri: item.imagem }} style={styles.imagemProduto} />
-      {/* numberOfLines={2} evita que nomes muito grandes quebrem o visual */}
+      {/* evita que nomes muito grandes quebrem o visual */}
       <Texto style={styles.nomeProduto} numberOfLines={2}>{item.nome}</Texto>
     </TouchableOpacity>
   );
 
   return (
     <View style={styles.container}>
-      <Texto style={styles.tituloSecao}>Nossos Produtos</Texto>
+      <Texto style={styles.tituloProdutos}>PRODUTOS</Texto>
 
-      {/* A Lista principal */}
       <FlatList
         data={listaProdutos}
         keyExtractor={(item) => item.id}
         renderItem={renderizarProduto}
-        numColumns={2} // Coloca 2 produtos por linha
+        numColumns={2} // 2 produtos por linha
         columnWrapperStyle={styles.linhaFlatlist}
         contentContainerStyle={styles.listaContainer}
       />
 
-      {/* O Modal (A Janela Pop-up) */}
       <Modal animationType="fade" transparent={true} visible={modalVisivel}>
-        {/* BlurView cria o fundo embaçado escuro por trás da janela */}
+        {/* Blur no background do modal */}
         <BlurView intensity={40} tint="dark" style={styles.containerBlur}>
 
-          {/* Só tenta mostrar as informações se existir um produto selecionado */}
+          {/* exibe informação caso tenho um produto selecionado */}
           {produtoSelecionado && (
             <View style={styles.conteudoModal}>
 
@@ -53,16 +51,16 @@ export default function Produtos() {
                 <Ionicons name="close" size={28} color="#333" />
               </TouchableOpacity>
 
-              {/* Informações do Produto dentro da janela */}
+              {/* Informações do Produto dentro do modal */}
               <Image source={{ uri: produtoSelecionado.imagem }} style={styles.imagemModal} />
               <Texto style={styles.categoriaModal}>{produtoSelecionado.categoria}</Texto>
               <Texto style={styles.nomeModal}>{produtoSelecionado.nome}</Texto>
               <Texto style={styles.descricaoModal}>{produtoSelecionado.descricao}</Texto>
               <Texto style={styles.precoModal}>{produtoSelecionado.preco}</Texto>
 
-              {/* Botão de Compra Estético */}
+              {/* Botão de Compra */}
               <TouchableOpacity style={styles.botaoComprar}>
-                <Texto style={styles.textoBotaoComprar}>Comprar Agora</Texto>
+                <Texto style={styles.textoBotaoComprar}>Comprar</Texto>
               </TouchableOpacity>
 
             </View>
@@ -74,18 +72,19 @@ export default function Produtos() {
   );
 }
 
-// Estilização para deixar tudo no lugar certo
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: 50, // Espaço para não bater na barra de status do celular
+    paddingTop: 50,
   },
-  tituloSecao: {
-    fontSize: 24,
+  tituloProdutos: {
+    marginTop: 20,
+    marginBottom: 25,
+    fontSize: 25,
     fontWeight: 'bold',
-    marginLeft: 20,
-    marginBottom: 15,
+    textAlign: 'center'
   },
   listaContainer: {
     paddingHorizontal: 10,
@@ -98,12 +97,12 @@ const styles = StyleSheet.create({
 
   // Visual do Produto na Lista
   cardProduto: {
-    width: '45%', // Pega quase metade da tela, deixando um respiro no meio
+    width: '45%',
     alignItems: 'center',
   },
   imagemProduto: {
     width: '100%',
-    aspectRatio: 1, // Essa é a mágica para a imagem ficar 1:1 (quadrada) independente da tela
+    aspectRatio: 1, // mantem a proporção 1:1 (Quadrado)
     borderRadius: 10,
     marginBottom: 8,
   },
@@ -126,7 +125,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 20,
     alignItems: 'center',
-    // Sombra para dar profundidade
+    // Sombra para profundidade
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
@@ -137,7 +136,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 15,
     right: 15,
-    zIndex: 1, // Garante que o botão fique clicável em cima das outras coisas
+    zIndex: 1,
   },
   imagemModal: {
     width: 150,
@@ -166,11 +165,11 @@ const styles = StyleSheet.create({
   precoModal: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#2E8B57', // Um verde bonito para o preço
+    color: '#2E8B57',
     marginBottom: 20,
   },
   botaoComprar: {
-    backgroundColor: '#007AFF', // Cor azul do iOS
+    backgroundColor: '#007AFF',
     paddingVertical: 12,
     paddingHorizontal: 40,
     borderRadius: 25,

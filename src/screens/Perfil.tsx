@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, TextInput, StyleSheet, TouchableOpacity, Image, Modal, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Modal, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
@@ -7,25 +7,25 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import Texto from '../components/Texto';
 
 export default function Perfil() {
-  // Estados do Formulário
-  const [nome, setNome] = useState('Seu Nome Aqui');
+  // Estados do Formulário Simplificado
+  const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [whatsapp, setWhatsapp] = useState('');
-  const [senha, setSenha] = useState('');
   
-  // Estados da Imagem e Câmera
+  // Estados da Imagem, Câmera e Permissão
   const [fotoPerfil, setFotoPerfil] = useState<string | null>(null);
   const [modalVisivel, setModalVisivel] = useState(false);
   const [cameraVisivel, setCameraVisivel] = useState(false);
+  const [ladoCamera, setLadoCamera] = useState<'front' | 'back'>('front'); // Controla o lado da câmera
   const [permissao, pedirPermissao] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
 
-  // Função para pegar foto da Galeria
+  // Buscar foto da Galeria
   const escolherDaGaleria = async () => {
     const resultado = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [1, 1], // Força a proporção 1:1 (quadrada)
+      aspect: [1, 1], // Mantém a proporção 1:1 quadrada
       quality: 1,
     });
 
@@ -35,7 +35,7 @@ export default function Perfil() {
     }
   };
 
-  // Função para abrir a Câmera
+  // Pedir permissão e abrir Câmera
   const iniciarCamera = async () => {
     if (!permissao?.granted) {
       await pedirPermissao();
@@ -44,126 +44,141 @@ export default function Perfil() {
     setCameraVisivel(true);
   };
 
-  // Função para Bater a Foto
+  // Tirar a foto
   const tirarFoto = async () => {
     if (cameraRef.current) {
       const foto = await cameraRef.current.takePictureAsync();
-      setFotoPerfil(foto.uri);
-      setCameraVisivel(false); // Fecha a câmera após tirar a foto
+      if (foto) {
+        setFotoPerfil(foto.uri);
+        setCameraVisivel(false);
+      }
     }
   };
 
-  // Função do Botão Salvar
-  const salvarPerfil = () => {
-    Alert.alert('Sucesso', 'Seu perfil foi salvo com sucesso!');
-    // Limpando apenas Email e Senha (conforme você pediu), mas mantendo Nome e WhatsApp
-    setEmail('');
-    setSenha('');
+  // Remover a foto atual
+  const removerFoto = () => {
+    setFotoPerfil(null);
+    setModalVisivel(false);
   };
 
-  // --- TELA DA CÂMERA (Ocupa a tela toda quando ativada) ---
+  // Alternar entre câmera Frontal e Traseira
+  const inverterCamera = () => {
+    setLadoCamera(anterior => (anterior === 'front' ? 'back' : 'front'));
+  };
+
+  // MODO CÂMERA ATIVA
   if (cameraVisivel) {
+    return (
+      <View style={{ flex: 1 }}>
+        <CameraView style={{ flex: 1 }} facing={ladoCamera} ref={cameraRef}>
+          <View style={styles.containerBotoesCamera}>
+            
+            {/* Botão Cancelar */}
+            <TouchableOpacity style={styles.botaoAcaoCamera} onPress={() => setCameraVisivel(false)}>
+              <Ionicons name="close" size={28} color="#fff" />
+            </TouchableOpacity>
+
+            {/* Botão Capturar Foto */}
+            <TouchableOpacity style={styles.botaoCapturar} onPress={tirarFoto}>
+              <Ionicons name="camera" size={32} color="#fff" />
+            </TouchableOpacity>
+
+            {/* Botão Girar Câmera (Nova Função!) */}
+            <TouchableOpacity style={styles.botaoAcaoCamera} onPress={inverterCamera}>
+              <Ionicons name="camera-reverse-outline" size={28} color="#fff" />
+            </TouchableOpacity>
+
+          </View>
+        </CameraView>
+      </View>
+    );
+  }
+
+  // TELA DO PERFIL
   return (
-    <View style={{ flex: 1 }}>
-      <CameraView style={{ flex: 1 }} facing="front" ref={cameraRef}>
-        <View style={styles.containerBotoesCamera}>
-          <TouchableOpacity style={styles.botaoCancelarCamera} onPress={() => setCameraVisivel(false)}>
-            <Texto style={styles.textoBotaoCamera}>Cancelar</Texto>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.botaoCapturar} onPress={tirarFoto}>
-            <Ionicons name="camera" size={32} color="#fff" />
+    // TouchableWithoutFeedback faz o teclado fechar ao clicar fora de qualquer input
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={styles.container}>
+  
+        <Texto style={styles.tituloPerfil}>PERFIL</Texto>
+        {/* ÁREA DA FOTO */}
+        <View style={styles.areaAvatar}>
+          <TouchableOpacity onPress={() => setModalVisivel(true)} activeOpacity={0.8}>
+            <Image 
+              source={fotoPerfil ? { uri: fotoPerfil } : require('../../assets/icon.png')} 
+              style={styles.imagemPerfil} 
+            />
+            <View style={styles.iconeEdicao}>
+              <Ionicons name="camera" size={16} color="#fff" />
+            </View>
           </TouchableOpacity>
         </View>
-      </CameraView>
-    </View>
-  );
-}
 
-  // --- TELA PRINCIPAL DO PERFIL ---
-  return (
-    <View style={styles.container}>
-      
-      {/* CABEÇALHO COM COR DE FUNDO DESTACADA */}
-      <View style={styles.cabecalho}>
-        <TouchableOpacity onPress={() => setModalVisivel(true)}>
-          <Image 
-            source={fotoPerfil ? { uri: fotoPerfil } : require('../../assets/icon.png')} 
-            style={styles.imagemPerfil} 
+        {/* CAMPOS DE TEXTO */}
+        <View style={styles.formulario}>
+          
+          <Texto style={styles.label}>Nome Completo</Texto>
+          <TextInput
+            style={styles.input}
+            value={nome}
+            onChangeText={setNome}
+            placeholder="Digite seu nome completo"
           />
-          <View style={styles.iconeEdicao}>
-            <Ionicons name="pencil" size={16} color="#fff" />
-          </View>
-        </TouchableOpacity>
 
-        {/* Nome Editável */}
-        <TextInput
-          style={styles.inputNome}
-          value={nome}
-          onChangeText={setNome}
-          placeholder="Digite seu nome"
-          placeholderTextColor="#aaa"
-        />
+          <Texto style={styles.label}>E-mail</Texto>
+          <TextInput
+            style={styles.input}
+            value={email}
+            onChangeText={setEmail}
+            placeholder="exemplo@gmail.com"
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+
+          <Texto style={styles.label}>WhatsApp</Texto>
+          <TextInput
+            style={styles.input}
+            value={whatsapp}
+            onChangeText={setWhatsapp}
+            placeholder="11 99999-9999"
+            keyboardType="phone-pad"
+          />
+
+        </View>
+
+        {/* OPÇÃO DE REMOVER FOTO */}
+        <Modal animationType="fade" transparent={true} visible={modalVisivel}>
+          <BlurView intensity={25} tint="dark" style={styles.blurContainer}>
+            <View style={styles.modalConteudo}>
+              <Texto style={styles.tituloModal}>Foto de Perfil</Texto>
+              
+              <TouchableOpacity style={styles.botaoModal} onPress={iniciarCamera}>
+                <Ionicons name="camera-outline" size={22} color="#333" />
+                <Texto style={styles.textoBotaoModal}>Tirar Foto</Texto>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.botaoModal} onPress={escolherDaGaleria}>
+                <Ionicons name="image-outline" size={22} color="#333" />
+                <Texto style={styles.textoBotaoModal}>Escolher da Galeria</Texto>
+              </TouchableOpacity>
+
+              {/* Só mostra o botão de remover se o usuário tiver colocado uma foto */}
+              {fotoPerfil && (
+                <TouchableOpacity style={[styles.botaoModal, styles.botaoRemover]} onPress={removerFoto}>
+                  <Ionicons name="trash-outline" size={22} color="red" />
+                  <Texto style={[styles.textoBotaoModal, { color: 'red' }]}>Remover Foto</Texto>
+                </TouchableOpacity>
+              )}
+
+              <TouchableOpacity style={styles.botaoCancelarModal} onPress={() => setModalVisivel(false)}>
+                <Texto style={styles.textoCancelarModal}>Cancelar</Texto>
+              </TouchableOpacity>
+            </View>
+          </BlurView>
+        </Modal>
+
       </View>
-
-      {/* FORMULÁRIO */}
-      <View style={styles.formulario}>
-        <Texto style={styles.label}>E-mail</Texto>
-        <TextInput
-          style={styles.input}
-          value={email}
-          onChangeText={setEmail}
-          placeholder="exemplo@email.com"
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-
-        <Texto style={styles.label}>Whatsapp</Texto>
-        <TextInput
-          style={styles.input}
-          value={whatsapp}
-          onChangeText={setWhatsapp}
-          placeholder="(11) 99999-9999"
-          keyboardType="phone-pad"
-        />
-
-        <Texto style={styles.label}>Senha</Texto>
-        <TextInput
-          style={styles.input}
-          value={senha}
-          onChangeText={setSenha}
-          placeholder="********"
-          secureTextEntry={true} // Esconde a senha
-        />
-
-        <TouchableOpacity style={styles.botaoSalvar} onPress={salvarPerfil}>
-          <Texto style={styles.textoBotaoSalvar}>Salvar</Texto>
-        </TouchableOpacity>
-      </View>
-
-      {/* MODAL DE ESCOLHA DE FOTO COM BLUR */}
-      <Modal animationType="fade" transparent={true} visible={modalVisivel}>
-        <BlurView intensity={30} tint="dark" style={styles.blurContainer}>
-          <View style={styles.modalConteudo}>
-            <Texto style={styles.tituloModal}>Alterar foto de perfil</Texto>
-            
-            <TouchableOpacity style={styles.botaoModal} onPress={iniciarCamera}>
-              <Ionicons name="camera-outline" size={24} color="#333" />
-              <Texto style={styles.textoBotaoModal}>Tirar Foto</Texto>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.botaoModal} onPress={escolherDaGaleria}>
-              <Ionicons name="image-outline" size={24} color="#333" />
-              <Texto style={styles.textoBotaoModal}>Escolher da Galeria</Texto>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.botaoCancelarModal} onPress={() => setModalVisivel(false)}>
-              <Texto style={styles.textoCancelarModal}>Cancelar</Texto>
-            </TouchableOpacity>
-          </View>
-        </BlurView>
-      </Modal>
-
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -171,79 +186,56 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  // --- ESTILOS DO CABEÇALHO ---
-  cabecalho: {
-    backgroundColor: '#2C2F33', // Cor de destaque fazendo a divisão visual
     paddingTop: 60,
-    paddingBottom: 30,
+  },
+  areaAvatar: {
     alignItems: 'center',
-    borderBottomWidth: 4,
-    borderColor: '#007AFF', // Detalhe azul
+    marginVertical: 30,
+  },
+  tituloPerfil: {
+    marginTop: 10,
+    fontSize: 25,
+    fontWeight: 'bold',
+    textAlign: 'center'
   },
   imagemPerfil: {
-    width: 140,
-    height: 140,
-    aspectRatio: 1, // Proporção 1:1 solicitada
-    borderRadius: 15, // Canto levemente arredondado para um quadrado moderno
-    borderWidth: 3,
-    borderColor: '#fff',
+    width: 150,
+    height: 150,
+    aspectRatio: 1, // Mantem a proporção de 1:1 (Quadrado)
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: '#ddd',
   },
   iconeEdicao: {
     position: 'absolute',
-    bottom: -10,
-    right: -10,
+    bottom: -5,
+    right: -5,
     backgroundColor: '#007AFF',
-    padding: 8,
-    borderRadius: 20,
-    borderWidth: 2,
-    borderColor: '#2C2F33',
+    padding: 6,
+    borderRadius: 15,
   },
-  inputNome: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginTop: 20,
-    textAlign: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#aaa',
-    minWidth: 200,
-    paddingBottom: 5,
-  },
-
-  // --- ESTILOS DO FORMULÁRIO ---
   formulario: {
-    padding: 30,
+    paddingHorizontal: 25,
   },
   label: {
-    fontSize: 14,
-    color: '#555',
-    marginBottom: 5,
-    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 6,
+    fontWeight: '600',
   },
   input: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f9f9f9',
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#eee',
     borderRadius: 8,
-    padding: 12,
+    padding: 14,
     fontSize: 16,
+    color: '#333',
     marginBottom: 20,
+    fontFamily: 'Space Grotesk'
   },
-  botaoSalvar: {
-    backgroundColor: '#2E8B57',
-    paddingVertical: 15,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  textoBotaoSalvar: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-
-  // --- ESTILOS DO MODAL ---
+  
+  // Estilos do Janela Pop-up (Modal)
   blurContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -255,57 +247,65 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 20,
     alignItems: 'center',
+    elevation: 5,
   },
   tituloModal: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 15,
+    color: '#333',
   },
   botaoModal: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#f5f5f5',
     width: '100%',
-    padding: 15,
+    padding: 14,
     borderRadius: 10,
     marginBottom: 10,
   },
+  botaoRemover: {
+    backgroundColor: '#fff5f5',
+  },
   textoBotaoModal: {
     fontSize: 16,
-    marginLeft: 15,
+    marginLeft: 12,
     color: '#333',
+    fontWeight: '500',
   },
   botaoCancelarModal: {
-    marginTop: 15,
+    marginTop: 10,
+    padding: 10,
   },
   textoCancelarModal: {
     fontSize: 16,
-    color: 'red',
-    fontWeight: 'bold',
+    color: '#999',
+    fontWeight: '600',
   },
 
-  // --- ESTILOS DA CÂMERA ---
+  // Estilos da Câmera
   containerBotoesCamera: {
     flex: 1,
     backgroundColor: 'transparent',
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'flex-end',
-    paddingBottom: 40,
+    paddingBottom: 50,
   },
   botaoCapturar: {
     backgroundColor: '#007AFF',
     padding: 20,
     borderRadius: 50,
+    borderWidth: 2,
+    borderColor: '#fff'
   },
-  botaoCancelarCamera: {
+  botaoAcaoCamera: {
     backgroundColor: 'rgba(0,0,0,0.5)',
     padding: 15,
-    borderRadius: 10,
-    marginBottom: 10,
+    borderRadius: 50,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  textoBotaoCamera: {
-    color: '#fff',
-    fontSize: 16,
-  }
 });

@@ -1,24 +1,25 @@
 import React from 'react';
-import { View, Image, StyleSheet, ScrollView, FlatList } from 'react-native';
+import { View, Image, StyleSheet, ScrollView, FlatList, TouchableOpacity } from 'react-native';
 import { useVideoPlayer, VideoView } from 'expo-video';
-import { useEvent } from 'expo';
+import { useNavigation } from '@react-navigation/native';
 import Texto from '../components/Texto';
 
 // Nossas categorias para o Slider
 const categorias = [
   { id: '1', titulo: 'Manutenção', imagem: 'https://picsum.photos/100?random=1' },
   { id: '2', titulo: 'Performance', imagem: 'https://picsum.photos/100?random=2' },
-  { id: '3', titulo: 'Armazenamento', imagem: 'https://picsum.photos/100?random=3' },
-  { id: '4', titulo: 'Memória', imagem: 'https://picsum.photos/100?random=4' },
+  { id: '3', titulo: 'Iluminação', imagem: 'https://picsum.photos/100?random=3' },
+  { id: '4', titulo: 'Acessórios', imagem: 'https://picsum.photos/100?random=4' },
 ];
 
 export default function Inicio() {
-  // Configurando um vídeo público da internet para testes
+  const navigation = useNavigation<any>();
+
   const player = useVideoPlayer(
     require('../../assets/video.mp4'),
     (player) => {
       player.loop = true;
-      player.muted = false;
+      player.muted = true;
     }
   );
 
@@ -27,21 +28,20 @@ export default function Inicio() {
       {/* 1. Imagem Padrão do Topo */}
       <Texto style={styles.tituloTopo}>LOBO AUTOPARTS</Texto>
       <Image
-        source={require('../../assets/icon.png')} // Pegando o ícone padrão do Expo
+        source={require('../../assets/icon.png')}
         style={styles.imagemTopo}
       />
 
-      {/* 2. Texto Centralizado na tela, mas alinhado à esquerda/justificado */}
       <View style={styles.containerTexto}>
         <Texto>
           Em nossa loja, motor não é só peça, é paixão. Somos especializados na venda de peças de preparação e manutenção automotiva, com foco em desempenho, confiabilidade que só quem tem aquela alma turbinada entende.
         </Texto>
         <Texto>
-          Trabalhamos com carros de rua, pista e projetos personalizados. Gostamos de elevar o nível, aqui cada produto é feito com alma de entusiasta.
+          Trabalhamos com carros de rua, pista e projetos personalizados. Gostamos de elevar o nível, aqui cada produto possui alma de entusiasta.
         </Texto>
       </View>
 
-      {/* Reprodutor de Vídeo */}
+      {/* Vídeo */}
       <View style={styles.containerVideo}>
         <VideoView
           style={styles.video}
@@ -53,7 +53,7 @@ export default function Inicio() {
         />
       </View>
 
-      {/* 4. Slider de Categorias */}
+      {/* Slider de Categorias */}
       <Texto style={styles.tituloSlider}>Categorias</Texto>
       <FlatList
         horizontal
@@ -62,17 +62,16 @@ export default function Inicio() {
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.sliderContainer}
         renderItem={({ item }) => (
-          <View style={styles.cardCategoria}>
+          <TouchableOpacity style={styles.cardCategoria} onPress={() => navigation.navigate('Produtos')}>
             <Image source={{ uri: item.imagem }} style={styles.imagemCategoria} />
             <Texto style={styles.textoCategoria}>{item.titulo}</Texto>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </ScrollView>
   );
 }
 
-// Estilizações
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -94,7 +93,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   containerTexto: {
-    paddingHorizontal: 30, // Isso "empurra" o texto para o centro
+    paddingHorizontal: 30,
     marginBottom: 25,
   },
   containerVideo: {
@@ -114,7 +113,7 @@ const styles = StyleSheet.create({
   },
   sliderContainer: {
     paddingHorizontal: 20,
-    paddingBottom: 40 // Espaço extra para não colar no menu inferior
+    paddingBottom: 40
   },
   cardCategoria: {
     alignItems: 'center',
