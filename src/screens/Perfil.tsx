@@ -80,7 +80,7 @@ export default function Perfil() {
 
             {/* Botão Capturar Foto */}
             <TouchableOpacity style={styles.botaoCapturar} onPress={tirarFoto}>
-              <Ionicons name="camera" size={32} color="#fff" />
+              <Ionicons name="camera" size={32} color="#000000" />
             </TouchableOpacity>
 
             {/* Botão Girar Câmera (Nova Função!) */}
@@ -105,7 +105,7 @@ export default function Perfil() {
         <View style={styles.areaAvatar}>
           <TouchableOpacity onPress={() => setModalVisivel(true)} activeOpacity={0.8}>
             <Image 
-              source={fotoPerfil ? { uri: fotoPerfil } : require('../../assets/icon.png')} 
+              source={fotoPerfil ? { uri: fotoPerfil } : require('../../assets/generic-profile.png')} 
               style={styles.imagemPerfil} 
             />
             <View style={styles.iconeEdicao}>
@@ -204,15 +204,15 @@ const styles = StyleSheet.create({
     aspectRatio: 1, // Mantem a proporção de 1:1 (Quadrado)
     borderRadius: 5,
     borderWidth: 2,
-    borderColor: '#ddd',
+    borderColor: '#cecece',
   },
   iconeEdicao: {
     position: 'absolute',
     bottom: -5,
     right: -5,
     backgroundColor: '#007AFF',
-    padding: 6,
-    borderRadius: 15,
+    padding: 7,
+    borderRadius: 16,
   },
   formulario: {
     paddingHorizontal: 25,
@@ -293,11 +293,11 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
   },
   botaoCapturar: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#fff',
     padding: 20,
     borderRadius: 50,
-    borderWidth: 2,
-    borderColor: '#fff'
+    // borderWidth: 2,
+    // borderColor: '#fff'
   },
   botaoAcaoCamera: {
     backgroundColor: 'rgba(0,0,0,0.5)',

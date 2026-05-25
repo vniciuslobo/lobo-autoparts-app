@@ -6,9 +6,9 @@ import Texto from '../components/Texto';
 
 // Nossas categorias para o Slider
 const categorias = [
-  { id: '1', titulo: 'Performance', imagem: 'https://picsum.photos/100?random=1' },
-  { id: '2', titulo: 'Manutenção', imagem: 'https://picsum.photos/100?random=2' },
-  { id: '3', titulo: 'Elétrica', imagem: 'https://picsum.photos/100?random=3' }
+  { id: '1', titulo: 'Performance', imagem: 'https://www.shutterstock.com/image-photo/dynamic-dramatic-visual-fastmoving-car-600nw-2661716411.jpg' },
+  { id: '2', titulo: 'Manutenção', imagem: 'https://img.odcdn.com.br/wp-content/uploads/2024/12/oleo-motor-carro-1920x1080.jpg' },
+  { id: '3', titulo: 'Elétrica', imagem: 'https://www.minutoseguros.com.br/blog/wp-content/uploads/2019/01/el%C3%A9trica-automotiva.jpg' }
 ];
 
 export default function Inicio() {
@@ -25,10 +25,10 @@ export default function Inicio() {
   return (
     <ScrollView style={styles.container}>
       {/* 1. Imagem Padrão do Topo */}
-      <Texto style={styles.tituloTopo}>LOBO AUTOPARTS</Texto>
       <Image
-        source={require('../../assets/icon.png')}
-        style={styles.imagemTopo}
+        source={require('../../assets/logo1.png')}
+        style={{ width: 280, height: 110, alignSelf: 'center', marginTop: 70, marginBottom: 25}}
+        resizeMode="contain"
       />
 
       <View style={styles.containerTexto}>
@@ -75,21 +75,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  tituloTopo: {
-    marginTop: 70,
-    marginBottom: 25,
-    fontSize: 25,
-    fontWeight: 'bold',
-    textAlign: 'center'
-  },
-  imagemTopo: {
-    width: 150,
-    height: 150,
-    alignSelf: 'center',
-    // marginTop: 70,
-    marginBottom: 25,
-    borderRadius: 20,
   },
   containerTexto: {
     paddingHorizontal: 30,
