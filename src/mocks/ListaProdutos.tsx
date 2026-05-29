@@ -14,7 +14,7 @@ export const listaProdutos = [
     categoria: 'Performance',
     preco: 'R$ 249,90',
     descricao: 'Conjunto com 4 velas de alto desempenho que garantem ignição mais eficiente e maior durabilidade.',
-    imagem: 'https://http2.mlstatic.com/D_NQ_NP_790455-MLB97493126428_112025-O.webp'
+    imagem: 'https://http2.mlstatic.com/D_NQ_NP_819355-MLB97954078357_112025-O.webp'
   },
   {
     id: '3',

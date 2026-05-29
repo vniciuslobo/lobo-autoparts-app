@@ -74,7 +74,7 @@ export default function Inicio() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#eef2f7',
   },
   containerTexto: {
     paddingHorizontal: 30,

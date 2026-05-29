@@ -185,7 +185,7 @@ export default function Perfil() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#eef2f7',
     paddingTop: 60,
   },
   areaAvatar: {
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -5,
     right: -5,
-    backgroundColor: '#007AFF',
+    backgroundColor: '#f57c00',
     padding: 7,
     borderRadius: 16,
   },
@@ -226,8 +226,8 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: '#f9f9f9',
     borderWidth: 1,
-    borderColor: '#eee',
-    borderRadius: 8,
+    borderColor: '#e7e7e7',
+    borderRadius: 5,
     padding: 14,
     fontSize: 16,
     color: '#333',

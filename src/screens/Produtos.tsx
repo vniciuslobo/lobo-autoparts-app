@@ -71,7 +71,7 @@ export default function Produtos() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#eef2f7',
     paddingTop: 50,
   },
   tituloProdutos: {
@@ -99,7 +99,9 @@ const styles = StyleSheet.create({
     width: '100%',
     aspectRatio: 1, // mantem a proporção 1:1 (Quadrado)
     borderRadius: 5,
-    marginBottom: 8,
+    borderColor: '#e7e7e7',
+    borderWidth: 1,
+    marginBottom: 8
   },
   nomeProduto: {
     fontSize: 14,
@@ -153,11 +155,11 @@ const styles = StyleSheet.create({
   precoModal: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#2E8B57',
+    color: '#000',
     marginBottom: 20,
   },
   botaoComprar: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#2e8b57',
     paddingVertical: 12,
     paddingHorizontal: 40,
     borderRadius: 25,

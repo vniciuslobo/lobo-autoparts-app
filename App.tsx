@@ -43,11 +43,11 @@ export default function App() {
             return <Ionicons name={iconName} size={size} color={color} />;
           },
           tabBarStyle: {
-            backgroundColor: '#ce0000',
+            backgroundColor: '#1a2e4a',
             borderTopWidth: 0,
             paddingTop: 10
           },
-          tabBarActiveTintColor: '#FFFFFF',
+          tabBarActiveTintColor: '#f57c00',
           tabBarInactiveTintColor: 'rgba(255,255,255,0.5)',
           tabBarLabelStyle: {
             fontFamily: 'SpaceGrotesk-Regular',
